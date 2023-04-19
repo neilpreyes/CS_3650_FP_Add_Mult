@@ -8,37 +8,23 @@ public class fp
 		return "Neil Patrick Reyes";
 	}
 
-	public int toBinary(long mant){
-		int binaryForm = 0;
-
-		return binaryForm;
-	}
-
-	public long toMantissa(int bForm){
-		long mantissa = 0;
-
-		return mantissa;
-	}
-
-	public int addBinary(int a, int b){
-	String newA = "" +  String.valueOf(a);
-	String newB = "" + String.valueOf(b);
-
-	int number0 = Integer.parseInt(newA, 2);
-    int number1 = Integer.parseInt(newB, 2);
-
-    int sum = number0 + number1;
-	return sum;
-	}
-
 	public int add(int a, int b)
 	{
-
 		FPNumber fa = new FPNumber(a);
 		FPNumber fb = new FPNumber(b);
 		FPNumber result = new FPNumber(0);
 
-		if(fa.isZero() || fb.isZero()){	
+		if(fb.isNaN() || fa.isNaN()){
+			if(fb.isNaN()){
+				result.setE(fb.e());
+				result.setF(fb.f());
+				result.setS(fb.s());
+			}else{
+				result.setE(fa.e());
+				result.setF(fa.f());
+				result.setS(fa.s());
+			}
+		}else if(fa.isZero() || fb.isZero()){	
 			if(fa.isZero()){
 				result.setE(fb.e());
 				result.setF(fb.f());
@@ -48,8 +34,8 @@ public class fp
 				result.setF(fa.f());
 				result.setS(fa.s());
 			}
-		}else if(fb.isNaN() || fa.isNaN()){
-			if(fb.isNaN()){
+		}else if(fb.isInfinity() && fa.isInfinity()){
+			if(fb.s() == fa.s()){
 				result.setE(fb.e());
 				result.setF(fb.f());
 				result.setS(fb.s());
@@ -70,6 +56,7 @@ public class fp
 			}
 		}else if(fa.e() > fb.e()){//a > b exponent
 			
+
 		}else if(fa.e() < fb.e()){ // b > a exponent
 
 		}else{ // b = a exponent
