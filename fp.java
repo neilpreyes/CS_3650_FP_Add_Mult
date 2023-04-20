@@ -10,6 +10,8 @@ public class fp
 
 	public int add(int a, int b)
 	{
+		int diff;
+
 		FPNumber fa = new FPNumber(a);
 		FPNumber fb = new FPNumber(b);
 		FPNumber result = new FPNumber(0);
@@ -55,15 +57,41 @@ public class fp
 				result.setS(fa.s());
 			}
 		}else if(fa.e() > fb.e()){//a > b exponent
-			
+			diff = fa.e() - fb.e();
 
-		}else if(fa.e() < fb.e()){ // b > a exponent
+			if(fa.s() == -1){
 
-		}else{ // b = a exponent
-			if(fa.f() > fb.f()){
+			}else if(fb.s()== -1){
 
 			}else{
 
+			}
+
+		}else if(fa.e() < fb.e()){ // b > a exponent
+			if(fa.s() == -1){
+				
+			}else if(fb.s()== -1){
+
+			}else{
+				
+			}
+		}else{ // b = a exponent
+			if(fa.f() > fb.f()){
+				if(fa.s() == -1){
+
+				}else if(fb.s()== -1){
+					
+				}else{
+					
+				}
+			}else{
+				if(fa.s() == -1){
+
+				}else if(fb.s()== -1){
+					
+				}else{
+					
+				}
 			}
 		}
 		// Put your code in here!
