@@ -58,12 +58,19 @@ public class fp
 			}
 		}else if(fa.e() > fb.e()){//a > b exponent
 			diff = fa.e() - fb.e();
+			fb.setF((fb.f()>>diff));
 
-			if(fa.s() == -1){
+			if(fa.s() == -1 || fb.s()== -1){
 
-			}else if(fb.s()== -1){
+				result.setS(fa.s());
+				result.setE(fa.e());
+				result.setF((fa.f()-fb.f()));
 
 			}else{
+
+				result.setS(1);
+				result.setE(fa.e());
+				result.setF((fa.f()+fb.f()));
 
 			}
 
@@ -96,12 +103,12 @@ public class fp
 		}
 		// Put your code in here!
 
-		System.out.println("Sign A is " + fa.s());
-		System.out.println("Exponent A is " + fa.e());
-		System.out.println("Mantissa A is " + fa.f());
-		System.out.println("Sign B is " + fb.s());
-		System.out.println("Exponent B is " + fb.e());
-		System.out.println("Mantissa B is " + fb.f());
+		// System.out.println("Sign A is " + fa.s());
+		// System.out.println("Exponent A is " + fa.e());
+		// System.out.println("Mantissa A is " + fa.f());
+		// System.out.println("Sign B is " + fb.s());
+		// System.out.println("Exponent B is " + fb.e());
+		// System.out.println("Mantissa B is " + fb.f());
 
 		return result.asInt();
 	}
