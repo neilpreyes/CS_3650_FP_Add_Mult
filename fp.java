@@ -22,14 +22,35 @@ public class fp
 
 	public void shrinkF(FPNumber result){
 
-		//max 27 bit value is 134217727
-		if(result.f() > 134217727){
-			do{
+		result.setF((result.f()>>26));
 
-				result.setF((result.f()>>1));
+	}
 
-			}while(result.f() > 134217727);
+	public boolean checkValid(FPNumber result){
+
+		if(result.isZero() || result.e() < 0 || result.e() > 254){
+			return false;
 		}
+
+		return true;
+	}
+
+	public void normalizeMult(FPNumber result){
+		int exp;
+		boolean cont = true;
+
+		while(result.f() <= 33554431 && cont){
+
+			result.setF((result.f()<<1));
+			//System.out.println("Mantissa normalization is " + result.f());
+			exp = result.e() - 1;
+			result.setE(exp);
+			//System.out.println("Exponent normalization is " + result.e());
+
+			cont = checkValid(result);
+
+		}
+
 	}
 
 	public int add(int a, int b)
@@ -198,11 +219,11 @@ public class fp
 		FPNumber fb = new FPNumber(b);
 		FPNumber result = new FPNumber(0);
 
-		System.out.println("Exponent A is " + fa.e());
-		System.out.println("Exponent B is " + fb.e());
+		// System.out.println("Exponent A is " + fa.e());
+		// System.out.println("Exponent B is " + fb.e());
 
-		System.out.println("Mantissa A is " + fa.f());
-		System.out.println("Mantissa B is " + fb.f());
+		// System.out.println("Mantissa A is " + fa.f());
+		// System.out.println("Mantissa B is " + fb.f());
 
 		long rFrac;
 
@@ -215,19 +236,19 @@ public class fp
 
 		int exp = fa.e() + fb.e() - 127;
 		result.setE(exp);
-		System.out.println("Exponent total is " + result.e());
+		// System.out.println("Exponent total is " + result.e());
 
 		if(fa.isNaN() || fb.isNaN()){// result is NaN
 
 			result.setS(1);
-			result.setE(225);
+			result.setE(255);
 			result.setF(1);
 			return result.asInt();
 
 		}else if((fa.isInfinity() && fb.isZero()) || (fa.isZero() && fb.isInfinity())){//result is NaN
 
 			result.setS(1);
-			result.setE(225);
+			result.setE(255);
 			result.setF(1);
 			return result.asInt();
 
@@ -260,18 +281,15 @@ public class fp
 			rFrac = fa.f() * fb.f();
 			result.setF(rFrac);
 
-			System.out.println("Mantissa mult is " + result.f());
+			//System.out.println("Mantissa mult is " + result.f());
 			
 		}
 		
 		shrinkF(result);
-		System.out.println("Mantissa shrink is " + result.f());
-		result.setF((result.f()>>1));
-		System.out.println("Mantissa normalization is " + result.f());
 		exp = result.e() + 1;
 		result.setE(exp);
-		System.out.println("Exponent normalization is " + result.e());
-
+		//System.out.println("Mantissa shrink is " + result.f());
+		normalizeMult(result);
 
 		//check for under/over flow again
 		if(result.e() < 0){ //underflow => result is zero
